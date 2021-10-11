@@ -6,6 +6,7 @@
 package rubikcubesolver;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 /**
  *
@@ -18,9 +19,25 @@ public class RubikCubeSolver {
      */
     public static void main(String[] args) {
         Cube cube = new Cube();
-        cube.randomize(500);
+        /*cube.rotateFace(RubikOrientation.RIGHT, true);
+        cube.rotateFace(RubikOrientation.LEFT, true);
+        cube.rotateFace(RubikOrientation.LEFT, true);
+        cube.rotateFace(RubikOrientation.UP, false);
+        cube.printCube();*/
+        cube.randomize(10);
+        //cube.rotateFace(RubikOrientation.FRONT, true);
+        /*PriorityQueue<Node> frontier = new PriorityQueue<>(new NodeComparator());
         
-        IterativeDeepingSearchSolver solver = new IterativeDeepingSearchSolver(cube);
+        frontier.add(new Node(new Cube(cube.rotateFace(RubikOrientation.FRONT, true)), 0));
+        frontier.add(new Node(cube, 0));
+        frontier.add(new Node(new Cube(cube.rotateFace(RubikOrientation.FRONT, true).rotateFace(RubikOrientation.FRONT, true)), 0));
+        System.out.println(frontier.poll().getCube().manhattanDistanceInRotationsSum());
+        System.out.println(frontier.poll().getCube().manhattanDistanceInRotationsSum());
+        System.out.println(frontier.poll().getCube().manhattanDistanceInRotationsSum());*/
+
+        
+        
+        IDAStarSolver solver = new IDAStarSolver(cube);
         solver.solve();
     }
     

@@ -585,10 +585,299 @@ public class Cube implements Cloneable{
         for(int i=0; i<3; i++){
             for(int j=0; j<3; j++){
                 for(int k=0; k<3; k++){
-                    cube[i][j][k] = c.cube[i][j][k];
+                    cube[i][j][k] = new Block(c.cube[i][j][k]);
+                    cube[i][j][k].setId(c.cube[i][j][k].getId());
                 }
             }
         }
     }
     
+    public int[] getBlockPositionByID (int id){
+        int[] positions = new int [3];
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3; j++) {
+                for(int k=0; k<3; k++) {
+                    if(cube[i][j][k].getId() == id){
+                        positions[0] = i;
+                        positions[1] = j;
+                        positions[2] = k;
+                        return positions;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    public int manhattanDistanceSum(Cube goal) {
+        int sum = 0;
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3; j++) {
+                for(int k=0; k<3; k++) {
+                    int[] goalBlockPositions = goal.getBlockPositionByID(cube[i][j][k].getId());
+                    sum += Math.abs(goalBlockPositions[i] - i);
+                    sum += Math.abs(goalBlockPositions[j] - j);
+                    sum += Math.abs(goalBlockPositions[k] - k);
+                }
+            }
+        }
+        return sum;
+    }
+    
+    public int manhattanDistanceInRotationsSum() {
+        int sum = 0;
+        
+        //Vertices
+        switch(cube[0][0][0].getId()){
+            case 0: break;
+            case 2: sum+=1; break;
+            case 6: sum+=1; break;
+            case 8: sum+=2; break;
+            case 18: sum+=1; break;
+            case 20: sum+=2; break;
+            case 24: sum+=2; break;
+            case 26: sum+=3; break;
+        }
+        switch(cube[0][0][2].getId()){
+            case 0: sum+=1; break;
+            case 2: break;
+            case 6: sum+=2; break;
+            case 8: sum+=1; break;
+            case 18: sum+=2; break;
+            case 20: sum+=1; break;
+            case 24: sum+=3; break;
+            case 26: sum+=2; break;
+        }
+        switch(cube[0][2][0].getId()){
+            case 0: sum+=1; break;
+            case 2: sum+=2; break;
+            case 6: break;
+            case 8: sum+=0; break;
+            case 18: sum+=2; break;
+            case 20: sum+=3; break;
+            case 24: sum+=1; break;
+            case 26: sum+=2; break;
+        }
+        switch(cube[0][2][2].getId()){
+            case 0: sum+=2; break;
+            case 2: sum+=1; break;
+            case 6: sum+=1; break;
+            case 8: break;
+            case 18: sum+=3; break;
+            case 20: sum+=2; break;
+            case 24: sum+=2; break;
+            case 26: sum+=1; break;
+        }
+        switch(cube[2][0][0].getId()){
+            case 0: sum+=1; break;
+            case 2: sum+=2; break;
+            case 6: sum+=2; break;
+            case 8: sum+=3; break;
+            case 18: break;
+            case 20: sum+=1; break;
+            case 24: sum+=1; break;
+            case 26: sum+=2; break;
+        }
+        switch(cube[2][0][2].getId()){
+            case 0: sum+=2; break;
+            case 2: sum+=1; break;
+            case 6: sum+=3; break;
+            case 8: sum+=2; break;
+            case 18: sum+=1; break;
+            case 20: break;
+            case 24: sum+=2; break;
+            case 26: sum+=1; break;
+        }
+        switch(cube[2][2][0].getId()){
+            case 0: sum+=2; break;
+            case 2: sum+=3; break;
+            case 6: sum+=1; break;
+            case 8: sum+=2; break;
+            case 18: sum+=1; break;
+            case 20: sum+=2; break;
+            case 24: break;
+            case 26: sum+=1; break;
+        }
+        switch(cube[2][2][2].getId()){
+            case 0: sum+=3; break;
+            case 2: sum+=2; break;
+            case 6: sum+=2; break;
+            case 8: sum+=1; break;
+            case 18: sum+=2; break;
+            case 20: sum+=1; break;
+            case 24: sum+=1; break;
+            case 26: break;
+        }
+
+        //Edges
+        switch(cube[0][1][0].getId()){
+            case 3: break;
+            case 9: sum+=1; break;
+            case 15: sum+=1; break;
+            case 21: sum+=2; break;
+            case 1: sum+=1; break;
+            case 7: sum+=1; break;
+            case 19: sum+=2; break;
+            case 25: sum+=2; break;
+            case 5: sum+=2; break;
+            case 11: sum+=2; break;
+            case 17: sum+=2; break;
+            case 23: sum+=3; break;
+        }
+        switch(cube[1][0][0].getId()){
+            case 3: sum+=1; break;
+            case 9: break;
+            case 15: sum+=2; break;
+            case 21: sum+=1; break;
+            case 1: sum+=1; break;
+            case 7: sum+=2; break;
+            case 19: sum+=1; break;
+            case 25: sum+=2; break;
+            case 5: sum+=2; break;
+            case 11: sum+=2; break;
+            case 17: sum+=3; break;
+            case 23: sum+=2; break;
+        }
+        switch(cube[1][2][0].getId()){
+            case 3: sum+=1; break;
+            case 9: sum+=2; break;
+            case 15: break;
+            case 21: sum+=1; break;
+            case 1: sum+=2; break;
+            case 7: sum+=1; break;
+            case 19: sum+=2; break;
+            case 25: sum+=2; break;
+            case 5: sum+=2; break;
+            case 11: sum+=3; break;
+            case 17: sum+=2; break;
+            case 23: sum+=1; break;
+        }
+        switch(cube[2][1][0].getId()){
+            case 3: sum+=2; break;
+            case 9: sum+=1; break;
+            case 15: sum+=1; break;
+            case 21: break;
+            case 1: sum+=2; break;
+            case 7: sum+=2; break;
+            case 19: sum+=1; break;
+            case 25: sum+=1; break;
+            case 5: sum+=3; break;
+            case 11: sum+=2; break;
+            case 17: sum+=2; break;
+            case 23: sum+=2; break;
+        }
+        switch(cube[0][0][1].getId()){
+            case 3: sum+=1; break;
+            case 9: sum+=1; break;
+            case 15: sum+=2; break;
+            case 21: sum+=2; break;
+            case 1: break;
+            case 7: sum+=2; break;
+            case 19: sum+=2; break;
+            case 25: sum+=3; break;
+            case 5: sum+=1; break;
+            case 11: sum+=1; break;
+            case 17: sum+=2; break;
+            case 23: sum+=2; break;
+        }
+        switch(cube[0][2][1].getId()){
+            case 3: sum+=1; break;
+            case 9: sum+=2; break;
+            case 15: sum+=1; break;
+            case 21: sum+=2; break;
+            case 1: sum+=2; break;
+            case 7: break;
+            case 19: sum+=3; break;
+            case 25: sum+=2; break;
+            case 5: sum+=1; break;
+            case 11: sum+=2; break;
+            case 17: sum+=1; break;
+            case 23: sum+=2; break;
+        }
+        switch(cube[2][0][1].getId()){
+            case 3: sum+=2; break;
+            case 9: sum+=1; break;
+            case 15: sum+=2; break;
+            case 21: sum+=1; break;
+            case 1: sum+=2; break;
+            case 7: sum+=3; break;
+            case 19: break;
+            case 25: sum+=2; break;
+            case 5: sum+=2; break;
+            case 11: sum+=1; break;
+            case 17: sum+=2; break;
+            case 23: sum+=1; break;
+        }
+        switch(cube[2][2][1].getId()){
+            case 3: sum+=2; break;
+            case 9: sum+=2; break;
+            case 15: sum+=1; break;
+            case 21: sum+=1; break;
+            case 1: sum+=3; break;
+            case 7: sum+=2; break;
+            case 19: sum+=2; break;
+            case 25: break;
+            case 5: sum+=2; break;
+            case 11: sum+=2; break;
+            case 17: sum+=1; break;
+            case 23: sum+=1; break;
+        }
+        switch(cube[0][1][2].getId()){
+            case 3: sum+=2; break;
+            case 9: sum+=2; break;
+            case 15: sum+=2; break;
+            case 21: sum+=3; break;
+            case 1: sum+=1; break;
+            case 7: sum+=1; break;
+            case 19: sum+=2; break;
+            case 25: sum+=2; break;
+            case 5: break;
+            case 11: sum+=1; break;
+            case 17: sum+=1; break;
+            case 23: sum+=2; break;
+        }
+        switch(cube[1][0][2].getId()){
+            case 3: sum+=2; break;
+            case 9: sum+=2; break;
+            case 15: sum+=3; break;
+            case 21: sum+=2; break;
+            case 1: sum+=1; break;
+            case 7: sum+=2; break;
+            case 19: sum+=1; break;
+            case 25: sum+=2; break;
+            case 5: sum+=1; break;
+            case 11: break;
+            case 17: sum+=2; break;
+            case 23: sum+=1; break;
+        }
+        switch(cube[1][2][2].getId()){
+            case 3: sum+=2; break;
+            case 9: sum+=3; break;
+            case 15: sum+=2; break;
+            case 21: sum+=2; break;
+            case 1: sum+=2; break;
+            case 7: sum+=1; break;
+            case 19: sum+=2; break;
+            case 25: sum+=1; break;
+            case 5: sum+=1; break;
+            case 11: sum+=2; break;
+            case 17: break;
+            case 23: sum+=1; break;
+        }
+        switch(cube[2][1][2].getId()){
+            case 3: sum+=3; break;
+            case 9: sum+=2; break;
+            case 15: sum+=2; break;
+            case 21: sum+=2; break;
+            case 1: sum+=2; break;
+            case 7: sum+=2; break;
+            case 19: sum+=1; break;
+            case 25: sum+=1; break;
+            case 5: sum+=2; break;
+            case 11: sum+=1; break;
+            case 17: sum+=1; break;
+            case 23: break;
+        }
+        return sum/8;
+    }
 }
